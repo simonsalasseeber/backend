@@ -3,6 +3,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToMany,
+    JoinColumn,
    } from 'typeorm';
    import { Product } from './products.entity';
    
@@ -15,6 +16,7 @@ import {
     name: string;
    
     @OneToMany(() => Product, (product) => product.category)
+    @JoinColumn()
     products: Product[]; // doubts if it should be 1:1 or 1:N
    }
    

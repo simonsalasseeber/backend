@@ -15,6 +15,7 @@ import {
     id: string;
    
     @ManyToOne(() => User, (user) => user.orders)
+    @JoinColumn({name: 'user_id'})
     user: User;
    
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

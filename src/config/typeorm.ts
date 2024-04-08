@@ -4,18 +4,30 @@ import { registerAs } from "@nestjs/config";
 
 dotenvConfig({path: '.development.env'});
 
+const {
+    DB_HOST,
+    DB_PORT,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_NAME,
+   } = process.env;
+
+const port = Number(DB_PORT);
+
 const config = {
-    type: 'postgres',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT as unknown as number,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    entities: ['dist/**/*.entity{.ts,.js}'],
-    //migrations
-    synchronize: true,
-    logging: true
-}
+ type: 'postgres',
+ host: DB_HOST,
+ port: port,
+ username: DB_USERNAME,
+ password: DB_PASSWORD,
+ database: DB_NAME,
+ entities: ['dist/**/*.entity{.ts,.js}'],
+ migrations: ['dist/migrations/*{.ts,.js}'],
+ synchronize: true,
+ logging: true,
+ autoLoadEntities: true,
+ dropSchema: true, // Use this only in development
+};
 
 export default registerAs('typeorm', () => config);
 export const connectionSource = new DataSource(config as DataSourceOptions)

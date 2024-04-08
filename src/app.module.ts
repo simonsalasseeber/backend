@@ -4,15 +4,16 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { AuthModule } from './auth/auth.module';
-import typeOrmConfig from './config/typeorm';
+import config from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeOrmConfig]
+      load: [config]
     }),
     TypeOrmModule.forRootAsync({
     inject: [ConfigService],
@@ -20,7 +21,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     UsersModule,
     ProductsModule,
-    AuthModule
+    AuthModule,
+    CategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],

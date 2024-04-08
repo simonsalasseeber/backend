@@ -23,7 +23,7 @@ import { Product } from './products.entity';
     order: Order;
 
     @ManyToMany(() => Product, (product) => product.orderDetails)
-    @JoinTable()
+    @JoinTable() // lo hace automático typeorm
     products: Product[];   
 }
    

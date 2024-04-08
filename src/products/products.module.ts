@@ -3,7 +3,7 @@ import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { ProductsRepository } from './products.repository';
 
-@Module({
+@Module({// imports for feature
   controllers: [ProductsController],
   providers: [ProductsService, ProductsRepository]
 })
