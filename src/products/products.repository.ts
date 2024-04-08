@@ -28,14 +28,31 @@ export class ProductsRepository {
             imgUrl: 'https://example.com/product3.jpg'
          }
     ]
-    async getProducts() {
-        return this.products;
+    async getProducts(page: number, limit: number) {
+        const offset = (page - 1) * limit;
+        return this.products.slice(offset, offset + limit);
     }
 
     async getProductById(id: string) {
         return this.products.find(product => product.id === Number(id));
     }
-    async addProduct() {
-        return this.products.push()
+    async addProduct(product: any) {
+        return this.products.push(product)
+    }
+    async updateProduct(id: string, product: any) {
+        const foundProduct = this.products.find(product => product.id === Number(id))
+        if (!foundProduct) {
+            return "couldn't find product";
+        }
+        const updatedProduct = {...foundProduct, product}
+        const index = this.products.findIndex((product) => product.id === Number(id))
+        this.products[index] = updatedProduct;
+        return updatedProduct.id;
+    }
+    async deleteProduct(id: string) {
+        const index = this.products.findIndex((product) => product.id === Number(id))
+        const product = this.products[index];
+        this.products.splice(index, 1);
+        return product.id;
     }
 }

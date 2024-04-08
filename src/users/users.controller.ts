@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/auth/guards/auth.guards';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}// inyección dependencia
 
@@ -14,6 +16,7 @@ export class UsersController {
         return this.usersService.getUserById(id)
     }
     @Post()
+    @UseGuards()
     addUser(@Body() user: any){
         return this.usersService.addUser(user);
     }
@@ -22,7 +25,6 @@ export class UsersController {
         return this.usersService.updateUser(id, user);
     }
     @Delete()
-    // @UseGuards(AuthGuard)
     deleteUser(@Param('id') id: string) {
         return this.usersService.deleteUser(id);
     }

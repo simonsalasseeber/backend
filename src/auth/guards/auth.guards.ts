@@ -1,11 +1,26 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { Observable } from "rxjs";
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Observable } from 'rxjs';
 
-// verificar que me envia email y password en headers
+@Injectable()
+export class AuthGuard implements CanActivate {
+ canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const authHeader = request.headers.authorization;
 
-// function validate(request) {
-//     const authHeader = request.headers.authorization;
-// }
+    if (!authHeader) {
+      return false;
+    }
 
+    const [authType, authValue] = authHeader.split(' ');
 
-// @Injectable()
+    if (authType !== 'Basic') {
+      return false;
+    }
+
+    const [email, password] = Buffer.from(authValue, 'base64').toString('utf-8').split(':'); // check vs database remaining
+
+    return true;
+ }
+}
