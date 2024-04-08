@@ -1,6 +1,6 @@
 # Back-end for e-commerce 
 ## Overview
-This project is an ambitious backend development initiative aimed at building a scalable and efficient application architecture using microservices. The foundation of this project is laid in TypeScript, leveraging the power of NestJS for structuring the application, and PostgreSQL for database management. The goal is to create a robust system that can support future growth and scalability.
+This project is a backend development initiative aimed at building a scalable and efficient application architecture using microservices. The foundation of this project is laid in TypeScript, leveraging the power of NestJS for structuring the application, and PostgreSQL for database management. The goal is to create a robust system that can support future growth and scalability.
 
 ## Technologies Used
 **TypeScript**: The primary programming language used for developing the application. TypeScript offers static typing, which enhances code quality and maintainability.
@@ -9,4 +9,4 @@ This project is an ambitious backend development initiative aimed at building a 
 **Microservices Architecture**: The application is designed following the microservices pattern, which allows for independent deployment, scaling, and development of each service.
 
 ## Project Status
-The project is currently under development and is expected to be completed in approximately two weeks. While the work is not yet finished, significant progress has been made towards the project goals. The team is committed to delivering a high-quality product that meets the requirements and exceeds expectations.
+The project is currently under development and is expected to be completed in approximately two weeks. While the work is not yet finished, significant progress has been made towards the project goals. 
