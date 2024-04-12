@@ -8,6 +8,7 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}// inyección dependencia
 
     @Get()
+    @UseGuards()
     getUsers(){
         return this.usersService.getUsers();
     }
@@ -15,16 +16,14 @@ export class UsersController {
     getUserById(@Param('id') id:string) {
         return this.usersService.getUserById(id)
     }
-    @Post()
-    @UseGuards()
-    addUser(@Body() user: any){
-        return this.usersService.addUser(user);
-    }
+   
     @Put(':id')
+    @UseGuards()
     updateUser(@Param('id') id: string, @Body() user: any) {
         return this.usersService.updateUser(id, user);
     }
     @Delete()
+    @UseGuards()
     deleteUser(@Param('id') id: string) {
         return this.usersService.deleteUser(id);
     }

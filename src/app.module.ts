@@ -8,6 +8,16 @@ import config from './config/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoriesModule } from './categories/categories.module';
+import { CategoriesController } from './categories/categories.controller';
+import { ProductsController } from './products/products.controller';
+import { CategoriesService } from './categories/categories.service';
+import { ProductsService } from './products/products.service';
+import { OrdersController } from './orders/orders.controller';
+import { OrdersService } from './orders/orders.service';
+import { OrdersModule } from './orders/orders.module';
+import { APP_PIPE } from '@nestjs/core';
+import { ValidationPipe } from './validation.pipe'; 
+import { CloudModule } from './cloud/cloud.module';
 
 @Module({
   imports: [
@@ -22,9 +32,16 @@ import { CategoriesModule } from './categories/categories.module';
     UsersModule,
     ProductsModule,
     AuthModule,
-    CategoriesModule
+    CategoriesModule,
+    OrdersModule,
+    CloudModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController], // not doing anything
+  providers: [AppService, // not doing anything
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe, 
+    },
+  ],
 })
 export class AppModule {}

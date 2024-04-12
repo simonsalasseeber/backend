@@ -21,6 +21,9 @@ export class AuthGuard implements CanActivate {
 
     const [email, password] = Buffer.from(authValue, 'base64').toString('utf-8').split(':'); // check vs database remaining
 
+    if(!email || !password) {
+      return false;
+    }
     return true;
  }
 }

@@ -23,6 +23,10 @@ export class ProductsController {
     addProduct(@Body() product: any){
         return this.productsService.addProduct(product);
     }
+    @Post('seeder')
+    addProductSeeder(){
+        return this.productsService.addProductSeeder();
+    }
     @Put(':id')
     updateProduct(@Param('id') id:string, @Body() product: any) {
         return this.productsService.updateProduct(id, product)

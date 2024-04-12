@@ -22,7 +22,7 @@ import {
     @Column({ type: 'varchar', length: 20 })
     password: string;
    
-    @Column({ type: 'int' })
+    @Column({ type: 'varchar' })
     phone: number;
    
     @Column({ type: 'varchar', length: 50 })

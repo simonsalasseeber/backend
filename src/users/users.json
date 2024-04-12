@@ -1,0 +1,33 @@
+[
+    {
+      "id": 1,
+      "email": "user1@example.com",
+      "name": "Juan Pérez",
+      "password": "password123",
+      "address": "Calle Falsa 123",
+      "phone": "555-1234",
+      "country": "España",
+      "city": "Madrid"
+    },
+    {
+      "id": 2,
+      "email": "user2@example.com",
+      "name": "María Rodríguez",
+      "password": "password456",
+      "address": "Avenida Siempre Viva 456",
+      "phone": "555-5678",
+      "country": "México",
+      "city": "Ciudad de México"
+    },
+    {
+      "id": 3,
+      "email": "user3@example.com",
+      "name": "Carlos García",
+      "password": "password789",
+      "address": "Boulevard de los Sueños Rotos 789",
+      "phone": "555-9012",
+      "country": "Argentina",
+      "city": "Buenos Aires"
+    }
+  ]
+  

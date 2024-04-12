@@ -15,14 +15,13 @@ import {
     id: string;
    
     @ManyToOne(() => User, (user) => user.orders)
-    @JoinColumn({name: 'user_id'})
-    user: User;
+    @JoinColumn()
+    user: Partial<User>;
    
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date: Date;
    
     @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.order) // 1st "u relate w him" 2nd this way
-    @JoinColumn()
     orderDetail: OrderDetail;
    }
    

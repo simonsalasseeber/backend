@@ -1,73 +1,55 @@
 import { Injectable } from "@nestjs/common";
-import {User} from './users.models';
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "src/entities/users.entity";
+import { Repository } from "typeorm";
+import { UserDto } from "./users.dto";
 
 @Injectable() 
 export class UsersRepository {
-    private users: User[] = [
-        {
-            id: 1,
-            email: 'user1@example.com',
-            name: 'Juan Pérez',
-            password: 'password123',
-            address: 'Calle Falsa 123',
-            phone: '555-1234',
-            country: 'España',
-            city: 'Madrid'
-         },
-         {
-            id: 2,
-            email: 'user2@example.com',
-            name: 'María Rodríguez',
-            password: 'password456',
-            address: 'Avenida Siempre Viva 456',
-            phone: '555-5678',
-            country: 'México',
-            city: 'Ciudad de México'
-         },
-         {
-            id: 3,
-            email: 'user3@example.com',
-            name: 'Carlos García',
-            password: 'password789',
-            address: 'Boulevard de los Sueños Rotos 789',
-            phone: '555-9012',
-            country: 'Argentina',
-            city: 'Buenos Aires'
-         }
-    ];
-    async getUsers() {
-        return this.users.map(({password, ...user}) => user);
+    constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+
+    async getUsers(): Promise<Partial<User>[]> {
+        const users = await this.usersRepository.find();
+        return users.map(({password, ...user}) => user);
     }
     async getUserById(id) {
-        const user = this.users.find(user => user.id === Number(id))
-        const {password, ...userWithoutPassword} = user;
-        return userWithoutPassword;
-    }
-    async getUserByEmail(email: string) {
-        return this.users.find(user => user.email === email)
-    }
+        const user = await this.usersRepository.findOne({
+            where: {id},
+            relations: {
+                orders: true
+            }
+        });
 
-    async addUser(user: User) {
-        const id = this.users.length + 1;
-        user.id = id;
-        this.users.push(user)
+        if(!user) {
+            return "couldn't find user"
+        }
+
         const {password, ...userWithoutPassword} = user;
         return userWithoutPassword;
     }
-    async updateUser(id: string, user: User) {
-        const foundUser = this.users.find(user => user.id === Number(id));
-        if (!foundUser) {
-            return "Couldn't find user"
-        }
-        const updatedUser = {...foundUser, ...user}
-        const index = this.users.findIndex((user) => user.id === Number(id));
-        this.users[index] = updatedUser;
-        return updatedUser.id;
+    
+    async getUserByEmail(email: string) {
+        const allUsers = await this.usersRepository.find();
+        const user = allUsers.find(user => user.email === email);
+        return user; 
     }
+    
+    async addUser(user: Partial<User>): Promise<Partial<User>> {
+        const AddedUser = await this.usersRepository.save(user);;
+        const { password, ...userWithoutPassword } = AddedUser;
+        return userWithoutPassword;
+    }
+    
+    async updateUser(id: string, user: UserDto) {
+        await this.usersRepository.update(id, user);
+        const foundUser = this.usersRepository.findOneBy({id})
+        return foundUser;
+    }
+    
     async deleteUser(id: string) {
-        const index = this.users.findIndex((user) => user.id === Number(id));
-        const user = this.users[index];
-        this.users.splice(index, 1);
-        return user.id;
+        const user = await this.usersRepository.findOneBy({id});
+        await this.usersRepository.remove(user)
+        return "user deleted successfully"
     }
+    
 }
