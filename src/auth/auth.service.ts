@@ -3,10 +3,13 @@ import { UsersRepository } from 'src/users/users.repository';
 import { logindto } from './auth.logindto';
 import { UserDto } from 'src/users/users.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly usersRepository: UsersRepository) {}
+    constructor(private readonly usersRepository: UsersRepository,
+        private readonly jwtService: JwtService
+    ) {}
     getAuth() {
         return "this is my auth";
     }
@@ -18,14 +21,29 @@ export class AuthService {
         }
         const user = await this.usersRepository.getUserByEmail(email);
         if(!user) {
-            return "user not found"
+            throw new BadRequestException("user not found")
         }
-        if(user.password === password) {
-            return 'logged in'
+
+        const validPassword = bcrypt.compare(password, user.password)
+
+        if(!validPassword) {
+            throw new BadRequestException("error with your password")
         }
-        return "invalidcredentials"
+
+        const payload = {
+            id: user.id,
+            email: user.email,
+            isAdmin: user.isAdmin
+        }
+
+        const token = this.jwtService.sign(payload) // need to configure jwt
+
+        return {
+            token,
+            message: "successful login"
+        }
     }
-    async signUp(user: Partial<UserDto>){
+    async signUp(user: Partial<UserDto>){ 
         const {email, password} = user;
         const foundUser = await this.usersRepository.getUserByEmail(email);
         if (foundUser) {
@@ -36,7 +54,8 @@ export class AuthService {
 
         return await this.usersRepository.addUser({
             ...user,
-            password: passwordHash
+            password: passwordHash,
+            isAdmin: false
         })
     }
 }

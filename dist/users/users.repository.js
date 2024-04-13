@@ -21,9 +21,11 @@ let UsersRepository = class UsersRepository {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
     }
-    async getUsers() {
+    async getUsers(page, limit) {
+        const offset = (page - 1) * limit;
         const users = await this.usersRepository.find();
-        return users.map(({ password, ...user }) => user);
+        const usersWithoutPassword = users.map(({ password, ...user }) => user);
+        return usersWithoutPassword.slice(offset, offset + limit);
     }
     async getUserById(id) {
         const user = await this.usersRepository.findOne({

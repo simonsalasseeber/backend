@@ -16,6 +16,7 @@ exports.CloudController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const cloud_service_1 = require("./cloud.service");
+const auth_guards_1 = require("../auth/guards/auth.guards");
 let CloudController = class CloudController {
     constructor(cloudService) {
         this.cloudService = cloudService;
@@ -27,6 +28,7 @@ let CloudController = class CloudController {
 exports.CloudController = CloudController;
 __decorate([
     (0, common_1.Post)('uploadImage/:id'),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.Param)(':id')),
     __param(1, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({

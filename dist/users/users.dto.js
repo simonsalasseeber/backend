@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserDto = void 0;
 const class_validator_1 = require("class-validator");
+const checkPassword_decorator_1 = require("../decorators/checkPassword.decorator");
 class UserDto {
 }
 exports.UserDto = UserDto;
@@ -19,6 +20,10 @@ __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], UserDto.prototype, "id", void 0);
+__decorate([
+    (0, class_validator_1.IsNotIn)([true], { message: 'isAdmin property is not allowed' }),
+    __metadata("design:type", Boolean)
+], UserDto.prototype, "isAdmin", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -38,6 +43,11 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], UserDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.Validate)(checkPassword_decorator_1.checkPassword, ['password']),
+    __metadata("design:type", String)
+], UserDto.prototype, "confirmPassword", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),

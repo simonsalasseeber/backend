@@ -1,29 +1,35 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  constructor(private readonly jwtService: JwtService) {}
  canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers.authorization;
 
-    if (!authHeader) {
-      return false;
+    const token = request.headers.authorization?.split(' ')[1]; // bearer space token
+    
+    if(!token){
+      throw new UnauthorizedException('unauthorized by guard')
     }
 
-    const [authType, authValue] = authHeader.split(' ');
+    const secret = process.env.JWT_SECRET;  
 
-    if (authType !== 'Basic') {
-      return false;
+    try {
+      const user = this.jwtService.verify(token, {secret}); // payload 
+      user.exp = new Date(user.exp * 1000);
+      
+      if (user.isAdmin) {user.roles = ['admin']}
+      else {user.roles = ['user']}
+
+      request.user = user;
+      return true;
+
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired token');
     }
-
-    const [email, password] = Buffer.from(authValue, 'base64').toString('utf-8').split(':'); // check vs database remaining
-
-    if(!email || !password) {
-      return false;
-    }
-    return true;
  }
 }

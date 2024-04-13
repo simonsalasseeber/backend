@@ -1,4 +1,4 @@
-import { IsString, Length, IsEmail, IsNotEmpty, Matches, IsUUID, Validate } from 'class-validator';
+import { IsString, Length, IsEmail, IsNotEmpty, Matches, IsUUID, Validate, IsNotIn } from 'class-validator';
 import { checkPassword } from 'src/decorators/checkPassword.decorator';
 
 
@@ -6,6 +6,9 @@ export class UserDto {
  @IsNotEmpty()
  @IsUUID()
 id: string;
+
+@IsNotIn([true], { message: 'isAdmin property is not allowed' })
+ isAdmin?: boolean;
 
  @IsNotEmpty()
  @IsString()

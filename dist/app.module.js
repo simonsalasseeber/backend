@@ -21,6 +21,7 @@ const orders_module_1 = require("./orders/orders.module");
 const core_1 = require("@nestjs/core");
 const validation_pipe_1 = require("./validation.pipe");
 const cloud_module_1 = require("./cloud/cloud.module");
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -40,7 +41,12 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             categories_module_1.CategoriesModule,
             orders_module_1.OrdersModule,
-            cloud_module_1.CloudModule
+            cloud_module_1.CloudModule,
+            jwt_1.JwtModule.register({
+                global: true,
+                secret: process.env.JWT_SECRET,
+                signOptions: { expiresIn: '30m' },
+            })
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService,

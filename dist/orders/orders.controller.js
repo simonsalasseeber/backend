@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrdersController = void 0;
 const common_1 = require("@nestjs/common");
 const orders_service_1 = require("./orders.service");
+const auth_guards_1 = require("../auth/guards/auth.guards");
 let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
@@ -26,12 +27,14 @@ let OrdersController = class OrdersController {
 exports.OrdersController = OrdersController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Array]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "postOrder", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)(':id'),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)

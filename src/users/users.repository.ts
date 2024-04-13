@@ -8,9 +8,11 @@ import { UserDto } from "./users.dto";
 export class UsersRepository {
     constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-    async getUsers(): Promise<Partial<User>[]> {
+    async getUsers(page: number, limit: number): Promise<Partial<User>[]> {
+        const offset = (page - 1) * limit;
         const users = await this.usersRepository.find();
-        return users.map(({password, ...user}) => user);
+        const usersWithoutPassword = users.map(({password, ...user}) => user);
+        return usersWithoutPassword.slice(offset, offset + limit);
     }
     async getUserById(id) {
         const user = await this.usersRepository.findOne({

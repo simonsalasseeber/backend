@@ -2,9 +2,10 @@ import { UsersRepository } from './users.repository';
 export declare class UsersService {
     private readonly usersRepository;
     constructor(usersRepository: UsersRepository);
-    getUsers(): Promise<Partial<import("src/entities/users.entity").User>[]>;
+    getUsers(page: number, limit: number): Promise<Partial<import("src/entities/users.entity").User>[]>;
     getUserById(id: string): Promise<"couldn't find user" | {
         id: string;
+        isAdmin: boolean;
         name: string;
         email: string;
         phone: number;

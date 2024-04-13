@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Query, Post, Put, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { AuthGuard } from 'src/auth/guards/auth.guards';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('products')
 @UseGuards(AuthGuard)
@@ -28,6 +29,7 @@ export class ProductsController {
         return this.productsService.addProductSeeder();
     }
     @Put(':id')
+    @UseGuards(AuthGuard, RolesGuard)
     updateProduct(@Param('id') id:string, @Body() product: any) {
         return this.productsService.updateProduct(id, product)
     }

@@ -18,6 +18,7 @@ import { OrdersModule } from './orders/orders.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ValidationPipe } from './validation.pipe'; 
 import { CloudModule } from './cloud/cloud.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -34,7 +35,12 @@ import { CloudModule } from './cloud/cloud.module';
     AuthModule,
     CategoriesModule,
     OrdersModule,
-    CloudModule
+    CloudModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '30m'},
+    })
   ],
   controllers: [AppController], // not doing anything
   providers: [AppService, // not doing anything

@@ -1,6 +1,7 @@
 import { Order } from './orders.entity';
 export declare class User {
     id: string;
+    isAdmin: boolean;
     name: string;
     email: string;
     password: string;

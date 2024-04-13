@@ -16,18 +16,21 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const auth_guards_1 = require("../auth/guards/auth.guards");
+const roles_decorator_1 = require("../decorators/roles.decorator");
+const roles_enum_1 = require("../roles.enum");
+const roles_guard_1 = require("../auth/guards/roles.guard");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    getUsers() {
-        return this.usersService.getUsers();
+    getUsers(page, limit) {
+        if (page && limit) {
+            return this.usersService.getUsers(page, limit);
+        }
+        return this.usersService.getUsers(1, 3);
     }
     getUserById(id) {
         return this.usersService.getUserById(id);
-    }
-    addUser(user) {
-        return this.usersService.addUser(user);
     }
     updateUser(id, user) {
         return this.usersService.updateUser(id, user);
@@ -39,9 +42,12 @@ let UsersController = class UsersController {
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard, roles_guard_1.RolesGuard),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getUsers", null);
 __decorate([
@@ -52,16 +58,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getUserById", null);
 __decorate([
-    (0, common_1.Post)(),
-    (0, common_1.UseGuards)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], UsersController.prototype, "addUser", null);
-__decorate([
     (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -70,7 +68,7 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -78,7 +76,6 @@ __decorate([
 ], UsersController.prototype, "deleteUser", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
-    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

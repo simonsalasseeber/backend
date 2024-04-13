@@ -16,8 +16,8 @@ let UsersService = class UsersService {
     constructor(usersRepository) {
         this.usersRepository = usersRepository;
     }
-    getUsers() {
-        return this.usersRepository.getUsers();
+    getUsers(page, limit) {
+        return this.usersRepository.getUsers(page, limit);
     }
     getUserById(id) {
         return this.usersRepository.getUserById(id);

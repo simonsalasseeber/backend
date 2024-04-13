@@ -12,6 +12,11 @@ import {
    export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({
+        default: false,
+    })
+    isAdmin: boolean;
    
     @Column({ type: 'varchar', length: 50 })
     name: string;
@@ -19,7 +24,7 @@ import {
     @Column({ type: 'varchar', length: 50, unique: true })
     email: string;
    
-    @Column({ type: 'varchar', length: 20 })
+    @Column({ type: 'varchar', length: 100 })
     password: string;
    
     @Column({ type: 'varchar' })

@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ValidationPipe = void 0;
 const common_1 = require("@nestjs/common");
-const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const class_validator_1 = require("class-validator");
 let ValidationPipe = class ValidationPipe {
     async transform(value, metadata) {
         const { metatype } = metadata;
@@ -25,7 +25,7 @@ let ValidationPipe = class ValidationPipe {
     }
     toValidate(metatype) {
         const types = [String, Boolean, Number, Array, Object];
-        return types.some(type => metatype === type);
+        return !types.find(type => metatype === type);
     }
 };
 exports.ValidationPipe = ValidationPipe;
