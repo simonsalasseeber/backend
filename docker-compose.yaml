@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nestapp:
-    build: simonsalasseeber/pihenrysimon
+    build: simonsalasseeber/pihenrysimon:latest
     volumes:
       - .:/app
     ports: 

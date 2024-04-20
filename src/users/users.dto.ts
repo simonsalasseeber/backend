@@ -1,77 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, Length, IsEmail, IsNotEmpty, Matches, IsUUID, Validate, IsNotIn } from 'class-validator';
-import { checkPassword } from 'src/decorators/checkPassword.decorator';
-
+import { IsString, IsEmail, IsNotEmpty, Matches, IsNumber, Length } from 'class-validator';
 
 export class UserDto {
- @IsNotEmpty()
- @IsUUID()
-id: string;
+  @ApiProperty({ description: 'The name of the user' })
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-@IsNotIn([true], { message: 'isAdmin property is not allowed' })
- isAdmin?: boolean;
+  @ApiProperty({ description: 'The email of the user' })
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
- @IsNotEmpty()
- @IsString()
- @Length(3, 80)
- @ApiProperty({
-   description: "The name of the user"
- })
- name: string;
+  @ApiProperty({ description: 'The password of the user' })
+  @IsNotEmpty()
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+    message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: @$!%*?&',
+  })
+  password: string;
 
- @IsNotEmpty()
- @IsEmail()
- /**
-  * must be a string in the classic email format
-  * @example 'simon_coder@gmail.com'
+  @ApiProperty({ description: 'The confirmed password of the user' })
+  @IsNotEmpty()
+  confirmPassword: string;
 
- */
- email: string;
+  @ApiProperty({ description: 'The phone number of the user' })
+  @IsNotEmpty()
+  @IsNumber()
+  phone: number;
 
- @IsNotEmpty()
- @Length(8, 15)
- @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/, {
-    message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
- })
- @ApiProperty({
-   description: "The password of the user"
- })
- password: string;
+  @ApiProperty({ description: 'The country of the user' })
+  @IsNotEmpty()
+  @IsString()
+  country: string;
 
- @IsNotEmpty()
- @Validate(checkPassword, ['password'])
- @ApiProperty({
-   description: "The confirmed password of the user"
- })
- confirmPassword: string; // more efficient -- real time validation
+  @ApiProperty({ description: 'The address of the user' })
+  @IsNotEmpty()
+  @IsString()
+  address: string;
 
- @IsNotEmpty()
- @IsString()
- @Length(3, 80)
- @ApiProperty({
-   description: "The adress of the user"
- })
- address: string;
-
- @IsNotEmpty()
- @ApiProperty({
-   description: "The phne of the user"
- })
- phone: number;
-
- @IsNotEmpty()
- @IsString()
- @Length(5, 20)
- @ApiProperty({
-   description: "The country of the user"
- })
- country: string;
-
- @IsNotEmpty()
- @IsString()
- @Length(5, 20)
- @ApiProperty({
-   description: "The city of the user"
- })
- city: string;
+  @ApiProperty({ description: 'The city of the user' })
+  @IsNotEmpty()
+  @IsString()
+  city: string;
 }

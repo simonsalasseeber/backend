@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { logindto } from './auth.dto';
-import { UserDto } from 'src/users/users.dto';
+import { UserDto} from 'src/users/users.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('authentication')
@@ -20,7 +20,7 @@ export class AuthController {
     }
 
     @Post('signup')
-    signUp(@Body() user: Partial<UserDto>){
+    signUp(@Body() user: UserDto){
         return this.authService.signUp(user)
     }
 }
