@@ -42,8 +42,8 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '30m'},
     })
   ],
-  controllers: [AppController], // not doing anything
-  providers: [AppService, // not doing anything
+  controllers: [AppController], 
+  providers: [AppService,
     {
       provide: APP_PIPE,
       useClass: ValidationPipe, 

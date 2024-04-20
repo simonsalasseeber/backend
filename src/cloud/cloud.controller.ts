@@ -2,11 +2,14 @@ import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePi
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudService } from './cloud.service';
 import { AuthGuard } from 'src/auth/guards/auth.guards';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('cloud')
 @Controller('cloud')
 export class CloudController {
     constructor(private readonly cloudService: CloudService) {}
 
+@ApiBearerAuth()
 @Post('uploadImage/:id')
 @UseGuards(AuthGuard)
 @UseInterceptors(FileInterceptor('file')) // in the form field, i receive a 'file' name, and the image
@@ -26,7 +29,7 @@ async uploadImage(
         })
     ) file: Express.Multer.File,
 ) {
-    return this.cloudService.uploadImage(file, productId)
+    return this.cloudService.uploadImage(productId, file)
 }
 
 }

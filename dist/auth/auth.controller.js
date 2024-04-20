@@ -13,9 +13,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const auth_logindto_1 = require("./auth.logindto");
+const auth_dto_1 = require("./auth.dto");
+const swagger_1 = require("@nestjs/swagger");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -33,25 +35,29 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Get)(),
+    openapi.ApiResponse({ status: 200, type: String }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getAuth", null);
 __decorate([
     (0, common_1.Post)('signin'),
+    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [auth_logindto_1.logindto]),
+    __metadata("design:paramtypes", [auth_dto_1.logindto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.Post)('signup'),
+    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signUp", null);
 exports.AuthController = AuthController = __decorate([
+    (0, swagger_1.ApiTags)('authentication'),
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);

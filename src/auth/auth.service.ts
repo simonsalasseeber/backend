@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from 'src/users/users.repository';
-import { logindto } from './auth.logindto';
+import { logindto } from './auth.dto';
 import { UserDto } from 'src/users/users.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -33,14 +33,14 @@ export class AuthService {
         const payload = {
             id: user.id,
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin 
         }
 
-        const token = this.jwtService.sign(payload) // need to configure jwt
+        const token = this.jwtService.sign(payload) 
 
         return {
             token,
-            message: "successful login"
+            message: "successfull login"
         }
     }
     async signUp(user: Partial<UserDto>){ 

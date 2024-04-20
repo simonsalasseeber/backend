@@ -11,7 +11,7 @@ export class CloudService {
         @InjectRepository(Product) private readonly productsRepository: Repository<Product>
     ) {}
 
-    async uploadImage(file: Express.Multer.File, productId: string) {
+    async uploadImage(productId: string, file: Express.Multer.File) {
         const product = await this.productsRepository.findOneBy({id: productId})
         if(!product) {
             throw new NotFoundException("Couldn't find the product")

@@ -16,8 +16,8 @@ let OrdersService = class OrdersService {
     constructor(ordersRepository) {
         this.ordersRepository = ordersRepository;
     }
-    async addOrder(userId, products) {
-        return this.ordersRepository.addOrder(userId, products);
+    async addOrder(userId, productIds) {
+        return this.ordersRepository.addOrder(userId, productIds);
     }
     async getOrder(orderId) {
         return this.ordersRepository.getOrder(orderId);

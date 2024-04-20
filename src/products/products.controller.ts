@@ -2,21 +2,25 @@ import { Body, Controller, Delete, Get, Param, Query, Post, Put, UseGuards } fro
 import { ProductsService } from './products.service';
 import { AuthGuard } from 'src/auth/guards/auth.guards';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/roles.enum';
 
+@ApiTags('products')
 @Controller('products')
 @UseGuards(AuthGuard)
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
     
     @Get()
-    @UseGuards()
+    @ApiQuery({name: 'page', required: false})
+    @ApiQuery({name: 'limit', required: false})
     getProducts(@Query('page') page: number, @Query('limit') limit: number) {
         page = page || 1;
         limit = limit || 5;
         return this.productsService.getProducts(page, limit);
     }
     @Get(':id')
-    @UseGuards()
     getProductById(@Param('id') id: string) {
         return this.productsService.getProductById(id);
     }
@@ -28,12 +32,17 @@ export class ProductsController {
     addProductSeeder(){
         return this.productsService.addProductSeeder();
     }
+
+    @ApiBearerAuth()
     @Put(':id')
-    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.Admin)
+    @UseGuards(RolesGuard)
     updateProduct(@Param('id') id:string, @Body() product: any) {
         return this.productsService.updateProduct(id, product)
     }
-    @Delete()
+
+    @ApiBearerAuth()
+    @Delete(':id')
     deleteProduct(@Param('id') id: string) {
         return this.productsService.deleteProduct(id);
     }

@@ -5,8 +5,7 @@ import { Order } from "src/entities/orders.entity";
 import { Product } from "src/entities/products.entity";
 import { User } from "src/entities/users.entity";
 import { ProductsRepository } from "src/products/products.repository";
-import { UsersRepository } from "src/users/users.repository";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 
 
 
@@ -15,7 +14,7 @@ export class OrdersRepository {
     constructor(
     @InjectRepository(Order) private ordersRepository: Repository<Order>, 
     @InjectRepository(Product) private productsRepository: Repository<Product>, // CRUD operations
-    @InjectRepository(Product) private productsCustomRepository: ProductsRepository, // Custom Operations
+    @InjectRepository(OrderDetail) private readonly orderDetailRepository: Repository<OrderDetail>,
     @InjectRepository(User) private usersRepository: Repository<User>,) {}
     
     async getOrder(orderId: string): Promise<any> {
@@ -29,6 +28,8 @@ export class OrdersRepository {
         if (!order) {
             throw new Error(`Order with ID '${orderId}' not found.`);
         }
+
+        console.log('Fetched order:', order);
 
         const orderDetails = {
             order: order,
@@ -45,40 +46,47 @@ export class OrdersRepository {
         if (!user) {
             throw new Error(`User with ID '${userId}' not found.`);
         }
-        // Crea una nueva orden y la asocia con el usuario encontrado
         const order = new Order();
         order.date = new Date();
         order.user = user;
 
-        // Busca los productos por sus IDs y filtra aquellos con stock mayor a 0
-        const products = await this.productsCustomRepository.getProductsByIds(productIds);
+        const savedOrder = await this.ordersRepository.save(order);
+
+
+        const products = await this.productsRepository.find({ // promise.all
+            where: {
+              id: In(productIds),
+            },
+        });
 
         if (products.length === 0) {
             throw new Error(`No products found with the provided IDs or out of stock.`);
         }
 
-        // Calcula el precio total de la compra y reduce el stock de los productos correspondientes
         let totalPrice = 0;
         for (const product of products) {
             totalPrice += product.price;
             product.stock -= 1;
         }
 
-        // Guarda los cambios en los productos
         await this.productsRepository.save(products);
 
-       // Construye y registra un detalle de compra con los productos seleccionados
         const orderDetail = new OrderDetail();
         orderDetail.products = products;
         orderDetail.price = totalPrice;
+        orderDetail.order = savedOrder;
 
-        // Asocia el detalle de compra con la orden
+        await this.orderDetailRepository.save(orderDetail);
+
         order.orderDetail = orderDetail;
 
-        // Guarda la orden en la base de datos
-        const savedOrder = await this.ordersRepository.save(order);
-
-        // Devuelve la orden de compra con el precio y el ID del detalle de compra
-        return savedOrder;
+        return await this.ordersRepository.findOne({
+            where: {
+                id: savedOrder.id,
+            },
+            relations: {
+                orderDetail: true,
+            },
+        });
     }
 }

@@ -23,7 +23,7 @@ let CloudService = class CloudService {
         this.cloudRepository = cloudRepository;
         this.productsRepository = productsRepository;
     }
-    async uploadImage(file, productId) {
+    async uploadImage(productId, file) {
         const product = await this.productsRepository.findOneBy({ id: productId });
         if (!product) {
             throw new common_1.NotFoundException("Couldn't find the product");

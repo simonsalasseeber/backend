@@ -19,13 +19,12 @@ const orderdetail_entity_1 = require("../entities/orderdetail.entity");
 const orders_entity_1 = require("../entities/orders.entity");
 const products_entity_1 = require("../entities/products.entity");
 const users_entity_1 = require("../entities/users.entity");
-const products_repository_1 = require("../products/products.repository");
 const typeorm_2 = require("typeorm");
 let OrdersRepository = class OrdersRepository {
-    constructor(ordersRepository, productsRepository, productsCustomRepository, usersRepository) {
+    constructor(ordersRepository, productsRepository, orderDetailRepository, usersRepository) {
         this.ordersRepository = ordersRepository;
         this.productsRepository = productsRepository;
-        this.productsCustomRepository = productsCustomRepository;
+        this.orderDetailRepository = orderDetailRepository;
         this.usersRepository = usersRepository;
     }
     async getOrder(orderId) {
@@ -38,6 +37,7 @@ let OrdersRepository = class OrdersRepository {
         if (!order) {
             throw new Error(`Order with ID '${orderId}' not found.`);
         }
+        console.log('Fetched order:', order);
         const orderDetails = {
             order: order,
             orderItems: order.orderDetail ? order.orderDetail.products : [],
@@ -52,7 +52,12 @@ let OrdersRepository = class OrdersRepository {
         const order = new orders_entity_1.Order();
         order.date = new Date();
         order.user = user;
-        const products = await this.productsCustomRepository.getProductsByIds(productIds);
+        const savedOrder = await this.ordersRepository.save(order);
+        const products = await this.productsRepository.find({
+            where: {
+                id: (0, typeorm_2.In)(productIds),
+            },
+        });
         if (products.length === 0) {
             throw new Error(`No products found with the provided IDs or out of stock.`);
         }
@@ -65,9 +70,17 @@ let OrdersRepository = class OrdersRepository {
         const orderDetail = new orderdetail_entity_1.OrderDetail();
         orderDetail.products = products;
         orderDetail.price = totalPrice;
+        orderDetail.order = savedOrder;
+        await this.orderDetailRepository.save(orderDetail);
         order.orderDetail = orderDetail;
-        const savedOrder = await this.ordersRepository.save(order);
-        return savedOrder;
+        return await this.ordersRepository.findOne({
+            where: {
+                id: savedOrder.id,
+            },
+            relations: {
+                orderDetail: true,
+            },
+        });
     }
 };
 exports.OrdersRepository = OrdersRepository;
@@ -75,11 +88,11 @@ exports.OrdersRepository = OrdersRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(orders_entity_1.Order)),
     __param(1, (0, typeorm_1.InjectRepository)(products_entity_1.Product)),
-    __param(2, (0, typeorm_1.InjectRepository)(products_entity_1.Product)),
+    __param(2, (0, typeorm_1.InjectRepository)(orderdetail_entity_1.OrderDetail)),
     __param(3, (0, typeorm_1.InjectRepository)(users_entity_1.User)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
-        products_repository_1.ProductsRepository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], OrdersRepository);
 //# sourceMappingURL=orders.repository.js.map

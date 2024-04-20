@@ -43,7 +43,7 @@ let AuthService = class AuthService {
         const token = this.jwtService.sign(payload);
         return {
             token,
-            message: "successful login"
+            message: "successfull login"
         };
     }
     async signUp(user) {

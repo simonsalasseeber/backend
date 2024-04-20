@@ -1,5 +1,5 @@
 import { UsersRepository } from 'src/users/users.repository';
-import { logindto } from './auth.logindto';
+import { logindto } from './auth.dto';
 import { UserDto } from 'src/users/users.dto';
 import { JwtService } from '@nestjs/jwt';
 export declare class AuthService {

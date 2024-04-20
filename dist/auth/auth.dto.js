@@ -10,13 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logindto = void 0;
+const openapi = require("@nestjs/swagger");
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class logindto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { email: { required: true, type: () => String }, password: { required: true, type: () => String, minLength: 8, maxLength: 15, pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$/" } };
+    }
 }
 exports.logindto = logindto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
+    (0, swagger_1.ApiProperty)({
+        description: "Enter the registered email",
+        required: true
+    }),
     __metadata("design:type", String)
 ], logindto.prototype, "email", void 0);
 __decorate([
@@ -25,6 +34,10 @@ __decorate([
     (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/, {
         message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
     }),
+    (0, swagger_1.ApiProperty)({
+        description: "Enter the registered password",
+        required: true
+    }),
     __metadata("design:type", String)
 ], logindto.prototype, "password", void 0);
-//# sourceMappingURL=auth.logindto.js.map
+//# sourceMappingURL=auth.dto.js.map
