@@ -17,7 +17,7 @@ const port = Number(DB_PORT);
 const config = {
  type: 'postgres',
  host: DB_HOST, // change for 'postgresdb'
- port: port,
+ port: port || 3000,
  username: DB_USERNAME,
  password: DB_PASSWORD,
  database: DB_NAME,
