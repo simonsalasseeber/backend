@@ -10,4 +10,9 @@ export class CategoriesController {
     addCategories() {
         return this.categoriesService.addCategories()
     }
+
+    @Get()
+    getCategories() {
+        return this.categoriesService.getCategories()
+    }
 }

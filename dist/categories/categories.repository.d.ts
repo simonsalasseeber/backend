@@ -5,7 +5,7 @@ export declare class CategoriesRepository {
     private categoriesRepository;
     private productsRepository;
     constructor(categoriesRepository: Repository<Category>, productsRepository: ProductsRepository);
-    getCategories(): Promise<unknown[]>;
+    getCategories(): Promise<Category[]>;
     findByName(category: Category): Promise<string | undefined>;
     addCategories(): Promise<string[]>;
 }

@@ -8,4 +8,8 @@ export class CategoriesService {
     addCategories(){
         return this.categoriesRepository.addCategories(); //no paso data porque la busca desde el json
     }
+
+    getCategories() {
+        return this.categoriesRepository.getCategories();
+    }
 }

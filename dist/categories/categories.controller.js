@@ -21,6 +21,9 @@ let CategoriesController = class CategoriesController {
     addCategories() {
         return this.categoriesService.addCategories();
     }
+    getCategories() {
+        return this.categoriesService.getCategories();
+    }
 };
 exports.CategoriesController = CategoriesController;
 __decorate([
@@ -30,6 +33,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "addCategories", null);
+__decorate([
+    (0, common_1.Get)(),
+    openapi.ApiResponse({ status: 200, type: [require("../entities/categories.entity").Category] }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], CategoriesController.prototype, "getCategories", null);
 exports.CategoriesController = CategoriesController = __decorate([
     (0, swagger_1.ApiTags)('categories'),
     (0, common_1.Controller)('categories'),

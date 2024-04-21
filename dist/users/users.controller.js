@@ -77,7 +77,7 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.Delete)(),
+    (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     openapi.ApiResponse({ status: 200, type: String }),
     __param(0, (0, common_1.Param)('id')),

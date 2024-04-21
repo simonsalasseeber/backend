@@ -16,6 +16,7 @@ exports.OrdersController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const orders_service_1 = require("./orders.service");
+const auth_guards_1 = require("../auth/guards/auth.guards");
 const swagger_1 = require("@nestjs/swagger");
 let OrdersController = class OrdersController {
     constructor(ordersService) {
@@ -50,6 +51,7 @@ exports.OrdersController = OrdersController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('orders'),
     (0, common_1.Controller)('orders'),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __metadata("design:paramtypes", [orders_service_1.OrdersService])
 ], OrdersController);
 //# sourceMappingURL=orders.controller.js.map

@@ -32,12 +32,12 @@ export class UsersController {
     @ApiBearerAuth()
     @Put(':id')
     @UseGuards(AuthGuard)
-    updateUser(@Param('id') id: string, @Body() user: any) {
+    updateUser(@Param('id') id: string, @Body() user: Partial<UserDto>) {
         return this.usersService.updateUser(id, user);
     }
 
     @ApiBearerAuth()
-    @Delete()
+    @Delete(':id')
     @UseGuards(AuthGuard)
     deleteUser(@Param('id') id: string) {
         return this.usersService.deleteUser(id);

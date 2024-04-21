@@ -1,10 +1,11 @@
 import { ProductsRepository } from './products.repository';
 import { Product } from 'src/entities/products.entity';
-import { CategoriesRepository } from 'src/categories/categories.repository';
+import { Repository } from 'typeorm';
+import { Category } from 'src/entities/categories.entity';
 export declare class ProductsService {
-    private readonly productsRepository;
     private readonly categoriesRepository;
-    constructor(productsRepository: ProductsRepository, categoriesRepository: CategoriesRepository);
+    private readonly productsRepository;
+    constructor(categoriesRepository: Repository<Category>, productsRepository: ProductsRepository);
     getProducts(page: number, limit: number): Promise<Product[]>;
     getProductById(id: string): Promise<Product | "Couldn't find the product">;
     addProduct(product: Product): Promise<Product>;

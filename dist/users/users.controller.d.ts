@@ -1,4 +1,5 @@
 import { UsersService } from './users.service';
+import { UserDto } from './users.dto';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
@@ -14,6 +15,6 @@ export declare class UsersController {
         city: string;
         orders: import("src/entities/orders.entity").Order[];
     }>;
-    updateUser(id: string, user: any): Promise<import("src/entities/users.entity").User>;
+    updateUser(id: string, user: Partial<UserDto>): Promise<import("src/entities/users.entity").User>;
     deleteUser(id: string): Promise<string>;
 }

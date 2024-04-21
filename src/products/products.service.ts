@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { ProductsRepository } from './products.repository';
 import { Product } from 'src/entities/products.entity';
 import { CategoriesRepository } from 'src/categories/categories.repository';
+import { CreateProductDto } from './products.dto';
+import { Repository } from 'typeorm';
+import { Category } from 'src/entities/categories.entity';
 
 @Injectable()
 export class ProductsService {
-    constructor(private readonly productsRepository: ProductsRepository,
-                private readonly categoriesRepository: CategoriesRepository
+    constructor(
+        @InjectRepository(Category) private readonly categoriesRepository: Repository<Category>,
+        private readonly productsRepository: ProductsRepository,
+                
     ){}
     getProducts(page: number, limit: number) {
         return this.productsRepository.getProducts(page, limit);
@@ -17,7 +23,7 @@ export class ProductsService {
     async addProduct(product: Product) {
         const { name, description, price, stock, imgUrl, category } = product;
         
-        const categoryId = await this.categoriesRepository.findByName(category);
+        const categoryId = await this.categoriesRepository.findBy({id: category.id});
 
         if (categoryId) {
             return await this.productsRepository.addProduct(name, description, price, stock, imgUrl, category);

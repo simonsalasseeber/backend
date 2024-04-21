@@ -7,7 +7,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiBearerAuth()
 @ApiTags('orders')
 @Controller('orders')
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class OrdersController {
     constructor(private readonly ordersService: OrdersService) {}
 

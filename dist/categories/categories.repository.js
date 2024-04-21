@@ -24,9 +24,7 @@ let CategoriesRepository = class CategoriesRepository {
         this.productsRepository = productsRepository;
     }
     async getCategories() {
-        const data = await this.productsRepository.dataSource();
-        const categories = [...new Set(data.map(item => item.category))];
-        return categories;
+        return await this.categoriesRepository.find({ relations: ['products'] });
     }
     async findByName(category) {
         const foundCategory = await this.categoriesRepository.findOne({ where: { name: category.name } });

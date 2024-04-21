@@ -19,6 +19,9 @@ let CategoriesService = class CategoriesService {
     addCategories() {
         return this.categoriesRepository.addCategories();
     }
+    getCategories() {
+        return this.categoriesRepository.getCategories();
+    }
 };
 exports.CategoriesService = CategoriesService;
 exports.CategoriesService = CategoriesService = __decorate([

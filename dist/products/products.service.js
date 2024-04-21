@@ -8,15 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsService = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
 const products_repository_1 = require("./products.repository");
-const categories_repository_1 = require("../categories/categories.repository");
+const typeorm_2 = require("typeorm");
+const categories_entity_1 = require("../entities/categories.entity");
 let ProductsService = class ProductsService {
-    constructor(productsRepository, categoriesRepository) {
-        this.productsRepository = productsRepository;
+    constructor(categoriesRepository, productsRepository) {
         this.categoriesRepository = categoriesRepository;
+        this.productsRepository = productsRepository;
     }
     getProducts(page, limit) {
         return this.productsRepository.getProducts(page, limit);
@@ -26,7 +31,7 @@ let ProductsService = class ProductsService {
     }
     async addProduct(product) {
         const { name, description, price, stock, imgUrl, category } = product;
-        const categoryId = await this.categoriesRepository.findByName(category);
+        const categoryId = await this.categoriesRepository.findBy({ id: category.id });
         if (categoryId) {
             return await this.productsRepository.addProduct(name, description, price, stock, imgUrl, category);
         }
@@ -47,7 +52,8 @@ let ProductsService = class ProductsService {
 exports.ProductsService = ProductsService;
 exports.ProductsService = ProductsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [products_repository_1.ProductsRepository,
-        categories_repository_1.CategoriesRepository])
+    __param(0, (0, typeorm_1.InjectRepository)(categories_entity_1.Category)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        products_repository_1.ProductsRepository])
 ], ProductsService);
 //# sourceMappingURL=products.service.js.map
