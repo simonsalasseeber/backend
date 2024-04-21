@@ -18,12 +18,13 @@ const common_1 = require("@nestjs/common");
 const orders_service_1 = require("./orders.service");
 const auth_guards_1 = require("../auth/guards/auth.guards");
 const swagger_1 = require("@nestjs/swagger");
+const orders_dto_1 = require("./orders.dto");
 let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
     }
-    postOrder(userId, productIds) {
-        return this.ordersService.addOrder(userId, productIds);
+    postOrder(addOrderDto) {
+        return this.ordersService.addOrder(addOrderDto);
     }
     getOrder(orderId) {
         return this.ordersService.getOrder(orderId);
@@ -33,10 +34,9 @@ exports.OrdersController = OrdersController;
 __decorate([
     (0, common_1.Post)(),
     openapi.ApiResponse({ status: 201, type: require("../entities/orders.entity").Order }),
-    __param(0, (0, common_1.Body)('userId')),
-    __param(1, (0, common_1.Body)('productIds')),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Array]),
+    __metadata("design:paramtypes", [orders_dto_1.addOrderDto]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "postOrder", null);
 __decorate([

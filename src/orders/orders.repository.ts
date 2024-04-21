@@ -1,11 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderDetail } from "src/entities/orderdetail.entity";
 import { Order } from "src/entities/orders.entity";
 import { Product } from "src/entities/products.entity";
 import { User } from "src/entities/users.entity";
 import { ProductsRepository } from "src/products/products.repository";
-import { In, Repository } from "typeorm";
+import { In, MoreThan, Repository } from "typeorm";
+import { addOrderDto } from "./orders.dto";
 
 
 
@@ -26,7 +27,7 @@ export class OrdersRepository {
         .getOne();        
         
         if (!order) {
-            throw new Error(`Order with ID '${orderId}' not found.`);
+            throw new BadRequestException(`Order with ID '${orderId}' not found.`);
         }
 
         console.log('Fetched order:', order);
@@ -40,53 +41,49 @@ export class OrdersRepository {
     
     }
 
-    async addOrder(userId: string, productIds: string[]): Promise<Order> {
-        // Busca al usuario por su ID
-        const user = await this.usersRepository.findOneBy({id: userId});
-        if (!user) {
-            throw new Error(`User with ID '${userId}' not found.`);
-        }
+    async addOrder(addOrderDto: addOrderDto): Promise<Order> {
+        const userId = addOrderDto.userId;
+        const productIds = addOrderDto.productIds;
+    
+        const user = await this.usersRepository.findOneBy({ id: userId });
+    
         const order = new Order();
-        order.date = new Date();
         order.user = user;
-
+        order.date = new Date();
+    
         const savedOrder = await this.ordersRepository.save(order);
+    
+        let arrayOfProducts = await Promise.all(
+            productIds.map(async (product) => {
+              const foundProduct = await this.productsRepository.findOne({
+                where: { id: product, stock: MoreThan(0) },
+              });
+              if (!foundProduct) throw new NotFoundException('Product not found');
+              foundProduct.stock -= 1;
+              const savedProduct = await this.productsRepository.save(foundProduct);
+              return savedProduct;
+            })
+          )
+          .catch(error => {throw error})
+          
 
+            let price = 0;
+            arrayOfProducts.forEach((product) => {
+            price += Number(product.price);
+            });
 
-        const products = await this.productsRepository.find({ // promise.all
-            where: {
-              id: In(productIds),
-            },
-        });
+          const orderDetail = this.orderDetailRepository.create({
+            price,
+            order: savedOrder,
+            products: arrayOfProducts,
+          });
 
-        if (products.length === 0) {
-            throw new Error(`No products found with the provided IDs or out of stock.`);
+          const savedOrderDetail = await this.orderDetailRepository.save(orderDetail);
+          savedOrder.orderDetail = savedOrderDetail;
+          await this.ordersRepository.save(savedOrder);
+          return savedOrder;
         }
-
-        let totalPrice = 0;
-        for (const product of products) {
-            totalPrice += product.price;
-            product.stock -= 1;
-        }
-
-        await this.productsRepository.save(products);
-
-        const orderDetail = new OrderDetail();
-        orderDetail.products = products;
-        orderDetail.price = totalPrice;
-        orderDetail.order = savedOrder;
-
-        await this.orderDetailRepository.save(orderDetail);
-
-        order.orderDetail = orderDetail;
-
-        return await this.ordersRepository.findOne({
-            where: {
-                id: savedOrder.id,
-            },
-            relations: {
-                orderDetail: true,
-            },
-        });
     }
-}
+
+    
+    

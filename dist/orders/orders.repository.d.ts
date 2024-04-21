@@ -3,6 +3,7 @@ import { Order } from "src/entities/orders.entity";
 import { Product } from "src/entities/products.entity";
 import { User } from "src/entities/users.entity";
 import { Repository } from "typeorm";
+import { addOrderDto } from "./orders.dto";
 export declare class OrdersRepository {
     private ordersRepository;
     private productsRepository;
@@ -10,5 +11,5 @@ export declare class OrdersRepository {
     private usersRepository;
     constructor(ordersRepository: Repository<Order>, productsRepository: Repository<Product>, orderDetailRepository: Repository<OrderDetail>, usersRepository: Repository<User>);
     getOrder(orderId: string): Promise<any>;
-    addOrder(userId: string, productIds: string[]): Promise<Order>;
+    addOrder(addOrderDto: addOrderDto): Promise<Order>;
 }

@@ -9,26 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrdersDto = void 0;
+exports.addOrderDto = void 0;
 const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class OrdersDto {
+class addOrderDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { email: { required: true, type: () => String }, password: { required: true, type: () => String, minLength: 8, maxLength: 15, pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,15}$/" } };
+        return { userId: { required: true, type: () => String }, productIds: { required: true, type: () => [String] } };
     }
 }
-exports.OrdersDto = OrdersDto;
+exports.addOrderDto = addOrderDto;
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)({ message: 'User ID is required.' }),
+    (0, class_validator_1.IsString)({ message: 'User ID must be a string.' }),
     __metadata("design:type", String)
-], OrdersDto.prototype, "email", void 0);
+], addOrderDto.prototype, "userId", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.Length)(8, 15),
-    (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/, {
-        message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
-    }),
-    __metadata("design:type", String)
-], OrdersDto.prototype, "password", void 0);
+    (0, class_validator_1.IsNotEmpty)({ message: 'Product IDs are required.' }),
+    (0, class_validator_1.IsArray)({ message: 'Product IDs must be an array.' }),
+    (0, class_validator_1.ArrayNotEmpty)({ message: 'Product IDs array cannot be empty.' }),
+    (0, class_validator_1.ArrayUnique)({ message: 'Product IDs must be unique.' }),
+    __metadata("design:type", Array)
+], addOrderDto.prototype, "productIds", void 0);
 //# sourceMappingURL=orders.dto.js.map

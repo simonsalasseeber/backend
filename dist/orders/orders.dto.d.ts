@@ -1,4 +1,4 @@
-export declare class OrdersDto {
-    email: string;
-    password: string;
+export declare class addOrderDto {
+    userId: string;
+    productIds: string[];
 }

@@ -35,7 +35,7 @@ let OrdersRepository = class OrdersRepository {
             .where('order.id = :orderId', { orderId })
             .getOne();
         if (!order) {
-            throw new Error(`Order with ID '${orderId}' not found.`);
+            throw new common_1.BadRequestException(`Order with ID '${orderId}' not found.`);
         }
         console.log('Fetched order:', order);
         const orderDetails = {
@@ -44,43 +44,38 @@ let OrdersRepository = class OrdersRepository {
         };
         return orderDetails;
     }
-    async addOrder(userId, productIds) {
+    async addOrder(addOrderDto) {
+        const userId = addOrderDto.userId;
+        const productIds = addOrderDto.productIds;
         const user = await this.usersRepository.findOneBy({ id: userId });
-        if (!user) {
-            throw new Error(`User with ID '${userId}' not found.`);
-        }
         const order = new orders_entity_1.Order();
-        order.date = new Date();
         order.user = user;
+        order.date = new Date();
         const savedOrder = await this.ordersRepository.save(order);
-        const products = await this.productsRepository.find({
-            where: {
-                id: (0, typeorm_2.In)(productIds),
-            },
+        let arrayOfProducts = await Promise.all(productIds.map(async (product) => {
+            const foundProduct = await this.productsRepository.findOne({
+                where: { id: product, stock: (0, typeorm_2.MoreThan)(0) },
+            });
+            if (!foundProduct)
+                throw new common_1.NotFoundException('Product not found');
+            foundProduct.stock -= 1;
+            const savedProduct = await this.productsRepository.save(foundProduct);
+            return savedProduct;
+        }))
+            .catch(error => { throw error; });
+        let price = 0;
+        arrayOfProducts.forEach((product) => {
+            price += Number(product.price);
         });
-        if (products.length === 0) {
-            throw new Error(`No products found with the provided IDs or out of stock.`);
-        }
-        let totalPrice = 0;
-        for (const product of products) {
-            totalPrice += product.price;
-            product.stock -= 1;
-        }
-        await this.productsRepository.save(products);
-        const orderDetail = new orderdetail_entity_1.OrderDetail();
-        orderDetail.products = products;
-        orderDetail.price = totalPrice;
-        orderDetail.order = savedOrder;
-        await this.orderDetailRepository.save(orderDetail);
-        order.orderDetail = orderDetail;
-        return await this.ordersRepository.findOne({
-            where: {
-                id: savedOrder.id,
-            },
-            relations: {
-                orderDetail: true,
-            },
+        const orderDetail = this.orderDetailRepository.create({
+            price,
+            order: savedOrder,
+            products: arrayOfProducts,
         });
+        const savedOrderDetail = await this.orderDetailRepository.save(orderDetail);
+        savedOrder.orderDetail = savedOrderDetail;
+        await this.ordersRepository.save(savedOrder);
+        return savedOrder;
     }
 };
 exports.OrdersRepository = OrdersRepository;
