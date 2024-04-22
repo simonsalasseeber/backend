@@ -1,4 +1,4 @@
-import { User } from "src/entities/users.entity";
+import { User } from "../entities/users.entity";
 import { Repository } from "typeorm";
 import { UserDto } from "./users.dto";
 export declare class UsersRepository {

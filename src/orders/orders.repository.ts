@@ -1,11 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { OrderDetail } from "src/entities/orderdetail.entity";
-import { Order } from "src/entities/orders.entity";
-import { Product } from "src/entities/products.entity";
-import { User } from "src/entities/users.entity";
-import { ProductsRepository } from "src/products/products.repository";
-import { In, MoreThan, Repository } from "typeorm";
+import { OrderDetail } from "../entities/orderdetail.entity";
+import { Order } from "../entities/orders.entity";
+import { Product } from "../entities/products.entity";
+import { User } from "../entities/users.entity";
+import { MoreThan, Repository } from "typeorm";
 import { addOrderDto } from "./orders.dto";
 
 
@@ -19,25 +18,16 @@ export class OrdersRepository {
     @InjectRepository(User) private usersRepository: Repository<User>,) {}
     
     async getOrder(orderId: string): Promise<any> {
-        const order = await this.ordersRepository
-        .createQueryBuilder('order')
-        .leftJoinAndSelect('order.orderDetail', 'orderDetail')
-        .leftJoinAndSelect('orderDetail.products', 'products')
-        .where('order.id = :orderId', { orderId })
-        .getOne();        
+        const order = await this.ordersRepository.findOne({
+          where: { id: orderId },
+          relations: ['orderDetail', 'orderDetail.products']
+      });       
         
         if (!order) {
             throw new BadRequestException(`Order with ID '${orderId}' not found.`);
         }
 
-        console.log('Fetched order:', order);
-
-        const orderDetails = {
-            order: order,
-            orderItems: order.orderDetail ? order.orderDetail.products : [],
-        };
-
-        return orderDetails;
+        return order;
     
     }
 

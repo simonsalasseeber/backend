@@ -1,7 +1,6 @@
 import { Controller, Post, Get, UseGuards, Body, Param } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { UUID } from 'crypto';
-import { AuthGuard } from 'src/auth/guards/auth.guards';
+import { AuthGuard } from '../auth/guards/auth.guards';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { addOrderDto } from './orders.dto';
 

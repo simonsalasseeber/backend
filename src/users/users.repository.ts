@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/entities/users.entity";
+import { User } from "../entities/users.entity";
 import { Repository } from "typeorm";
 import { UserDto } from "./users.dto";
 
@@ -17,9 +17,10 @@ export class UsersRepository {
     async getUserById(id) {
         const user = await this.usersRepository.findOne({
             where: {id},
-            relations: {
-                orders: true
-            }
+            relations: [
+                'orders', 
+                'orders.orderDetail'
+            ]
         });
 
         if(!user) {

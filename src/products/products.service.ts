@@ -2,10 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductsRepository } from './products.repository';
 import { Product } from 'src/entities/products.entity';
-import { CategoriesRepository } from 'src/categories/categories.repository';
-import { CreateProductDto } from './products.dto';
 import { Repository } from 'typeorm';
-import { Category } from 'src/entities/categories.entity';
+import { Category } from '../entities/categories.entity';
 
 @Injectable()
 export class ProductsService {
@@ -34,7 +32,7 @@ export class ProductsService {
     addProductSeeder() {
         return this.productsRepository.addProductSeeder()
     }
-    updateProduct(id: string, product: any) {
+    updateProduct(id: string, product: Product) {
         return this.productsRepository.updateProduct(id, product)
     }
     deleteProduct(id: string) {

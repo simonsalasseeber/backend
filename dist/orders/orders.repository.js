@@ -28,21 +28,14 @@ let OrdersRepository = class OrdersRepository {
         this.usersRepository = usersRepository;
     }
     async getOrder(orderId) {
-        const order = await this.ordersRepository
-            .createQueryBuilder('order')
-            .leftJoinAndSelect('order.orderDetail', 'orderDetail')
-            .leftJoinAndSelect('orderDetail.products', 'products')
-            .where('order.id = :orderId', { orderId })
-            .getOne();
+        const order = await this.ordersRepository.findOne({
+            where: { id: orderId },
+            relations: ['orderDetail', 'orderDetail.products']
+        });
         if (!order) {
             throw new common_1.BadRequestException(`Order with ID '${orderId}' not found.`);
         }
-        console.log('Fetched order:', order);
-        const orderDetails = {
-            order: order,
-            orderItems: order.orderDetail ? order.orderDetail.products : [],
-        };
-        return orderDetails;
+        return order;
     }
     async addOrder(addOrderDto) {
         const userId = addOrderDto.userId;

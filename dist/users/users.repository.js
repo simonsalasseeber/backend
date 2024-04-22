@@ -30,9 +30,10 @@ let UsersRepository = class UsersRepository {
     async getUserById(id) {
         const user = await this.usersRepository.findOne({
             where: { id },
-            relations: {
-                orders: true
-            }
+            relations: [
+                'orders',
+                'orders.orderDetail'
+            ]
         });
         if (!user) {
             return "couldn't find user";

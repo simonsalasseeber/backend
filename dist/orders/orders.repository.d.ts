@@ -1,7 +1,7 @@
-import { OrderDetail } from "src/entities/orderdetail.entity";
-import { Order } from "src/entities/orders.entity";
-import { Product } from "src/entities/products.entity";
-import { User } from "src/entities/users.entity";
+import { OrderDetail } from "../entities/orderdetail.entity";
+import { Order } from "../entities/orders.entity";
+import { Product } from "../entities/products.entity";
+import { User } from "../entities/users.entity";
 import { Repository } from "typeorm";
 import { addOrderDto } from "./orders.dto";
 export declare class OrdersRepository {

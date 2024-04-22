@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Product } from "src/entities/products.entity";
+import { Product } from "../entities/products.entity";
 import { Repository } from "typeorm";
 import { readFile } from 'fs/promises'
-import { Category } from "src/entities/categories.entity";
+import { Category } from "../entities/categories.entity";
 
 
 
@@ -53,9 +53,7 @@ export class ProductsRepository  {
         newProduct.price = price;
         newProduct.stock = stock;
         newProduct.imgUrl = imgUrl;
-        newProduct.category = category; // Assign the provided category directly
-    
-        // Save the new product to the database
+        newProduct.category = category; 
         return await this.productsRepository.save(newProduct);
     }
     
@@ -90,7 +88,7 @@ export class ProductsRepository  {
     }
     
 
-    async updateProduct(id: string, product: any) {
+    async updateProduct(id: string, product: Product) {
         const foundProduct = await this.productsRepository.findOne({
             where: {id}
         });

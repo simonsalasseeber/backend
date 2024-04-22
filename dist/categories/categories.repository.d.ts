@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
-import { Category } from "src/entities/categories.entity";
-import { ProductsRepository } from "src/products/products.repository";
+import { Category } from "../entities/categories.entity";
+import { ProductsRepository } from "../products/products.repository";
 export declare class CategoriesRepository {
     private categoriesRepository;
     private productsRepository;
