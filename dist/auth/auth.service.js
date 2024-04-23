@@ -25,7 +25,7 @@ let AuthService = class AuthService {
     async signIn(logindto) {
         const { email, password } = logindto;
         if (!email || !password) {
-            return "missing email/password";
+            throw new common_1.BadRequestException("missing email or password");
         }
         const user = await this.usersRepository.getUserByEmail(email);
         if (!user) {

@@ -4,6 +4,7 @@ import { Product } from "../entities/products.entity";
 import { Repository } from "typeorm";
 import { readFile } from 'fs/promises'
 import { Category } from "../entities/categories.entity";
+import { CreateProductDto } from "./products.dto";
 
 
 
@@ -19,7 +20,6 @@ export class ProductsRepository  {
     
     async dataSource() {
         const file = await readFile('../ecommerce-simonsalasseeber/src/products/data.json', 'utf-8')
-        // transformamos el contenido en un JSON
         const json = JSON.parse(file)
         return json;
     }
@@ -46,14 +46,11 @@ export class ProductsRepository  {
         return allProducts.filter(product => ids.includes(product.id.toString()));
     }
 
-    async addProduct(name: string, description: string, price: number, stock: number, imgUrl: string, category: Category): Promise<Product> {
-        const newProduct = new Product();
-        newProduct.name = name;
-        newProduct.description = description;
-        newProduct.price = price;
-        newProduct.stock = stock;
-        newProduct.imgUrl = imgUrl;
-        newProduct.category = category; 
+    async addProduct(createProductDto: CreateProductDto, category: Category): Promise<Product> {
+        const newProduct = this.productsRepository.create({
+            ...createProductDto,
+            category, 
+        });
         return await this.productsRepository.save(newProduct);
     }
     

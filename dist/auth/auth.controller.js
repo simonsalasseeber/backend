@@ -43,7 +43,7 @@ __decorate([
 ], AuthController.prototype, "getAuth", null);
 __decorate([
     (0, common_1.Post)('signin'),
-    openapi.ApiResponse({ status: 201, type: Object }),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [auth_dto_1.logindto]),

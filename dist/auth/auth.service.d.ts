@@ -7,7 +7,7 @@ export declare class AuthService {
     private readonly jwtService;
     constructor(usersRepository: UsersRepository, jwtService: JwtService);
     getAuth(): string;
-    signIn(logindto: logindto): Promise<"missing email/password" | {
+    signIn(logindto: logindto): Promise<{
         token: string;
         message: string;
     }>;

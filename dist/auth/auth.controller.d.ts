@@ -5,7 +5,7 @@ export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
     getAuth(): string;
-    signIn(credential: logindto): Promise<"missing email/password" | {
+    signIn(credential: logindto): Promise<{
         token: string;
         message: string;
     }>;

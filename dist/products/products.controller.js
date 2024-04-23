@@ -21,6 +21,7 @@ const roles_guard_1 = require("../auth/guards/roles.guard");
 const swagger_1 = require("@nestjs/swagger");
 const roles_decorator_1 = require("../decorators/roles.decorator");
 const roles_enum_1 = require("../roles.enum");
+const products_dto_1 = require("./products.dto");
 let ProductsController = class ProductsController {
     constructor(productsService) {
         this.productsService = productsService;
@@ -33,8 +34,8 @@ let ProductsController = class ProductsController {
     getProductById(id) {
         return this.productsService.getProductById(id);
     }
-    addProduct(product) {
-        return this.productsService.addProduct(product);
+    addProduct(createProductDto) {
+        return this.productsService.addProduct(createProductDto);
     }
     addProductSeeder() {
         return this.productsService.addProductSeeder();
@@ -71,7 +72,7 @@ __decorate([
     openapi.ApiResponse({ status: 201, type: require("../entities/products.entity").Product }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [products_dto_1.CreateProductDto]),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "addProduct", null);
 __decorate([

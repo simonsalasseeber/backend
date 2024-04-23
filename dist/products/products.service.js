@@ -29,15 +29,12 @@ let ProductsService = class ProductsService {
     getProductById(id) {
         return this.productsRepository.getProductById(id);
     }
-    async addProduct(product) {
-        const { name, description, price, stock, imgUrl, category } = product;
-        const categoryId = await this.categoriesRepository.findBy({ id: category.id });
-        if (categoryId) {
-            return await this.productsRepository.addProduct(name, description, price, stock, imgUrl, category);
+    async addProduct(createProductDto) {
+        const category = await this.categoriesRepository.findOne({ where: { id: createProductDto.category } });
+        if (!category) {
+            throw new Error('Category not found');
         }
-        else {
-            throw new Error(`Category '${category.name}' not found`);
-        }
+        return this.productsRepository.addProduct(createProductDto, category);
     }
     addProductSeeder() {
         return this.productsRepository.addProductSeeder();

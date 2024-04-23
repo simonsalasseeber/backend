@@ -1,6 +1,7 @@
 import { Product } from "../entities/products.entity";
 import { Repository } from "typeorm";
 import { Category } from "../entities/categories.entity";
+import { CreateProductDto } from "./products.dto";
 export declare class ProductsRepository {
     private productsRepository;
     private categoryRepository;
@@ -9,7 +10,7 @@ export declare class ProductsRepository {
     getProducts(page: number, limit: number): Promise<Product[]>;
     getProductById(id: string): Promise<Product | "Couldn't find the product">;
     getProductsByIds(ids: string[]): Promise<any[]>;
-    addProduct(name: string, description: string, price: number, stock: number, imgUrl: string, category: Category): Promise<Product>;
+    addProduct(createProductDto: CreateProductDto, category: Category): Promise<Product>;
     addProductSeeder(): Promise<Product[]>;
     updateProduct(id: string, product: Product): Promise<Product | "couldn't find product">;
     deleteProduct(id: string): Promise<string>;

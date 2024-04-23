@@ -4,6 +4,7 @@ import { ProductsRepository } from './products.repository';
 import { Product } from 'src/entities/products.entity';
 import { Repository } from 'typeorm';
 import { Category } from '../entities/categories.entity';
+import { CreateProductDto } from './products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -18,17 +19,15 @@ export class ProductsService {
     getProductById(id: string) {
         return this.productsRepository.getProductById(id)
     }
-    async addProduct(product: Product) {
-        const { name, description, price, stock, imgUrl, category } = product;
-        
-        const categoryId = await this.categoriesRepository.findBy({id: category.id});
-
-        if (categoryId) {
-            return await this.productsRepository.addProduct(name, description, price, stock, imgUrl, category);
-        } else {
-            throw new Error(`Category '${category.name}' not found`);
+    async addProduct(createProductDto: CreateProductDto) {
+        const category = await this.categoriesRepository.findOne({ where: { id: createProductDto.category } });
+        if (!category) {
+        throw new Error('Category not found');
         }
-     }
+        return this.productsRepository.addProduct(createProductDto, category);
+
+    }
+
     addProductSeeder() {
         return this.productsRepository.addProductSeeder()
     }

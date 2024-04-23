@@ -17,7 +17,7 @@ export class AuthService {
         const { email, password } = logindto;
 
         if(!email || !password) {
-            return "missing email/password";
+            throw new BadRequestException("missing email or password")
         }
         const user = await this.usersRepository.getUserByEmail(email);
         if(!user) {

@@ -47,14 +47,11 @@ let ProductsRepository = class ProductsRepository {
         const allProducts = await this.productsRepository.find();
         return allProducts.filter(product => ids.includes(product.id.toString()));
     }
-    async addProduct(name, description, price, stock, imgUrl, category) {
-        const newProduct = new products_entity_1.Product();
-        newProduct.name = name;
-        newProduct.description = description;
-        newProduct.price = price;
-        newProduct.stock = stock;
-        newProduct.imgUrl = imgUrl;
-        newProduct.category = category;
+    async addProduct(createProductDto, category) {
+        const newProduct = this.productsRepository.create({
+            ...createProductDto,
+            category,
+        });
         return await this.productsRepository.save(newProduct);
     }
     async addProductSeeder() {

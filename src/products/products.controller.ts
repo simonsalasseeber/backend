@@ -26,8 +26,8 @@ export class ProductsController {
         return this.productsService.getProductById(id);
     }
     @Post()
-    addProduct(@Body() product: any){
-        return this.productsService.addProduct(product);
+    addProduct(@Body() createProductDto: CreateProductDto){
+        return this.productsService.addProduct(createProductDto);
     }
     @Post('seeder')
     addProductSeeder(){
