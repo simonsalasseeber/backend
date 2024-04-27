@@ -22,7 +22,7 @@ const parsedUrl = url.parse(dbUrl);
 
 // Extrae los componentes de la URL
 const host = parsedUrl.hostname;
-const deployedport = parsedUrl.port || 5432; 
+const deployedport = parsedUrl.port || 3000; 
 const username = parsedUrl.auth.split(':')[0];
 const password = parsedUrl.auth.split(':')[1];
 const database = parsedUrl.pathname.substring(1);
