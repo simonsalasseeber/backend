@@ -12,15 +12,29 @@ const {
     DB_NAME,
    } = process.env;
 
-const port = Number(DB_PORT);
+   const url = require('url');
+
+// Suponiendo que DB_URL es tu variable de entorno con la URL de la base de datos
+const dbUrl = process.env.DB_URL;
+
+// Analiza la URL de la base de datos
+const parsedUrl = url.parse(dbUrl);
+
+// Extrae los componentes de la URL
+const host = parsedUrl.hostname;
+const deployedport = parsedUrl.port || 5432; 
+const username = parsedUrl.auth.split(':')[0];
+const password = parsedUrl.auth.split(':')[1];
+const database = parsedUrl.pathname.substring(1);
+
 
 const config = {
  type: 'postgres',
- host: process.env.DB_URL ? process.env.DB_URL : 'localhost', // change for 'postgresdb'
- port: port || 3000,
- username: DB_USERNAME,
- password: DB_PASSWORD,
- database: DB_NAME,
+ host: host, // change for 'postgresdb'
+ port: deployedport,
+ username: username,
+ password: password,
+ database: database,
  entities: ['dist/**/*.entity{.ts,.js}'],
  migrations: ['dist/migrations/*{.ts,.js}'],
  synchronize: false,
