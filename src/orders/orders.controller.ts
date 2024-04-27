@@ -1,4 +1,4 @@
-import { Controller, Post, Get, UseGuards, Body, Param } from '@nestjs/common';
+import { Controller, Post, Get, UseGuards, Body, Param, Delete } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { AuthGuard } from '../auth/guards/auth.guards';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -19,6 +19,11 @@ export class OrdersController {
     @Get(':id')
     getOrder(@Param('id') orderId: string) {
         return this.ordersService.getOrder(orderId)
+    }
+
+    @Delete(':id')
+    deleteOrder(@Param('id') orderId: string) {
+        return this.ordersService.deleteOrder(orderId)
     }
 
 }

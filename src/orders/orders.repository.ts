@@ -73,7 +73,36 @@ export class OrdersRepository {
           await this.ordersRepository.save(savedOrder);
           return savedOrder;
         }
-    }
+
+      async deleteOrder(orderId: string) {
+        const order = await this.ordersRepository.findOne({
+          where: { id: orderId }
+      });       
+        
+        if (!order) {
+            throw new BadRequestException(`Order with ID '${orderId}' not found.`);
+        }
+
+
+        const productsIds = order.orderDetail.products;
+
+        let arrayOfProducts = await Promise.all(
+          productsIds.map(async (product) => {
+            const foundProduct = await this.productsRepository.findOne({
+              where: { id: product.id },
+            });
+            if (!foundProduct) throw new NotFoundException('Product not found');
+            foundProduct.stock += 1;
+            const savedProduct = await this.productsRepository.save(foundProduct);
+            return savedProduct;
+          })
+        )
+        .catch(error => {throw error})
+        
+        await this.ordersRepository.remove(order)
+        return "order deleted succesfully"
+      }
+}
 
     
     

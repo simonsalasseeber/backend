@@ -16,7 +16,7 @@ const port = Number(DB_PORT);
 
 const config = {
  type: 'postgres',
- host: DB_HOST, // change for 'postgresdb'
+ host: process.env.DB_URL ? process.env.DB_URL : 'localhost', // change for 'postgresdb'
  port: port || 3000,
  username: DB_USERNAME,
  password: DB_PASSWORD,

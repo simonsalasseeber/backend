@@ -29,6 +29,9 @@ let OrdersController = class OrdersController {
     getOrder(orderId) {
         return this.ordersService.getOrder(orderId);
     }
+    deleteOrder(orderId) {
+        return this.ordersService.deleteOrder(orderId);
+    }
 };
 exports.OrdersController = OrdersController;
 __decorate([
@@ -47,6 +50,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "getOrder", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    openapi.ApiResponse({ status: 200, type: String }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], OrdersController.prototype, "deleteOrder", null);
 exports.OrdersController = OrdersController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('orders'),

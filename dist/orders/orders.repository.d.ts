@@ -12,4 +12,5 @@ export declare class OrdersRepository {
     constructor(ordersRepository: Repository<Order>, productsRepository: Repository<Product>, orderDetailRepository: Repository<OrderDetail>, usersRepository: Repository<User>);
     getOrder(orderId: string): Promise<any>;
     addOrder(addOrderDto: addOrderDto): Promise<Order>;
+    deleteOrder(orderId: string): Promise<string>;
 }
