@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { loggerGlobal } from './middlewares/loggers.middleware';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {config as dotenvConfig } from 'dotenv';
+
+dotenvConfig({path: '.development.env'});
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +19,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.use(loggerGlobal)
-  await app.listen(3000);
+  await app.listen(parseInt(process.env.DB_PORT));
 }
 bootstrap();

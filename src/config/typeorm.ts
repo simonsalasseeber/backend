@@ -4,25 +4,28 @@ import { registerAs } from "@nestjs/config";
 
 dotenvConfig({path: '.development.env'});
 
-// const {
-//     DB_HOST,
-//     DB_PORT,
-//     DB_USERNAME,
-//     DB_PASSWORD,
-//     DB_NAME,
-//    } = process.env;
+const {
+    DB_HOST,
+    DB_PORT,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_NAME,
+   } = process.env;
 
-// Suponiendo que DB_URL es tu variable de entorno con la URL de la base de datos
-const dbUrl = process.env.DB_URL;
+// // Suponiendo que DB_URL es tu variable de entorno con la URL de la base de datos
+// const dbUrl = process.env.DB_URL;
 
-const url = require('url');
-const parsedUrl = url.parse(dbUrl);
-const port = parsedUrl.port || 3000; 
+// const url = require('url');
+// const parsedUrl = url.parse(dbUrl);
+// const port = parsedUrl.port || 3000; 
 
 const config = {
  type: 'postgres',
- url: dbUrl,
- port: port,
+ host: DB_HOST,
+ port: DB_PORT,
+ username: DB_USERNAME,
+ password: DB_PASSWORD,
+ database: DB_NAME,
  entities: ['dist/**/*.entity{.ts,.js}'],
  migrations: ['dist/migrations/*{.ts,.js}'],
  synchronize: false,
