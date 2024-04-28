@@ -10,6 +10,7 @@ const {
     DB_USERNAME,
     DB_PASSWORD,
     DB_NAME,
+    DB_SSL
    } = process.env;
 
 // // Suponiendo que DB_URL es tu variable de entorno con la URL de la base de datos
@@ -26,6 +27,14 @@ const config = {
  username: DB_USERNAME,
  password: DB_PASSWORD,
  database: DB_NAME,
+ ssl: DB_SSL === 'true',
+ extra: {
+    ssl: 
+        DB_SSL === 'true' ? {
+            rejectUnauthorized: false,
+        }
+        : null,   
+ },
  entities: ['dist/**/*.entity{.ts,.js}'],
  migrations: ['dist/migrations/*{.ts,.js}'],
  synchronize: false,
