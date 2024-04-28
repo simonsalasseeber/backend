@@ -22,7 +22,7 @@ const {
 const config = {
  type: 'postgres',
  host: DB_HOST,
- port: DB_PORT,
+ port: parseInt(DB_PORT) || 3000,
  username: DB_USERNAME,
  password: DB_PASSWORD,
  database: DB_NAME,
