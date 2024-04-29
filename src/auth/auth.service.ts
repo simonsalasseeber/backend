@@ -55,7 +55,7 @@ export class AuthService {
         return await this.usersRepository.addUser({
             ...user,
             password: passwordHash,
-            isAdmin: true
+            isAdmin: false
         })
     }
 }
