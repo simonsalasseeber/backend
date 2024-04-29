@@ -5,15 +5,21 @@ const typeorm_1 = require("typeorm");
 const dotenv_1 = require("dotenv");
 const config_1 = require("@nestjs/config");
 (0, dotenv_1.config)({ path: '.development.env' });
-const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, } = process.env;
-const port = Number(DB_PORT);
+const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_SSL } = process.env;
 const config = {
     type: 'postgres',
-    host: DB_HOST,
-    port: port || 3000,
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
+    host: 'dpg-comm9nsf7o1s73f72j30-a.frankfurt-postgres.render.com',
+    port: 5432,
+    username: 'admin',
+    password: 'QG6LAqL53PxabMz2UN8oRgQmIJo4UGrT',
+    database: 'pihenrysimon_vzr0',
+    ssl: DB_SSL === 'true',
+    extra: {
+        ssl: DB_SSL === 'true' ? {
+            rejectUnauthorized: false,
+        }
+            : null,
+    },
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
     synchronize: false,

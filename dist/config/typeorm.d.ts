@@ -6,6 +6,12 @@ declare const _default: (() => {
     username: string;
     password: string;
     database: string;
+    ssl: boolean;
+    extra: {
+        ssl: {
+            rejectUnauthorized: boolean;
+        };
+    };
     entities: string[];
     migrations: string[];
     synchronize: boolean;
@@ -19,6 +25,12 @@ declare const _default: (() => {
     username: string;
     password: string;
     database: string;
+    ssl: boolean;
+    extra: {
+        ssl: {
+            rejectUnauthorized: boolean;
+        };
+    };
     entities: string[];
     migrations: string[];
     synchronize: boolean;

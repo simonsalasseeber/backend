@@ -1,0 +1,1 @@
+{"version":3,"file":"alterimage.js","sourceRoot":"","sources":["../../src/migrations/alterimage.ts"],"names":[],"mappings":";;;AAEA,MAAa,iCAAiC;IAEnC,KAAK,CAAC,EAAE,CAAC,WAAwB;QAEpC,MAAM,WAAW,CAAC,KAAK,CAAC,sDAAsD,CAAC,CAAC;IACpF,CAAC;IAEM,KAAK,CAAC,IAAI,CAAC,WAAwB;QAEtC,MAAM,WAAW,CAAC,KAAK,CAAC,sDAAsD,CAAC,CAAC;IACpF,CAAC;CAEJ;AAZD,8EAYC"}

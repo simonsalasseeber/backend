@@ -9,7 +9,6 @@ import { CreateProductDto } from './products.dto';
 
 @ApiTags('products')
 @Controller('products')
-@UseGuards(AuthGuard)
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
     
@@ -37,7 +36,7 @@ export class ProductsController {
     @ApiBearerAuth()
     @Put(':id')
     @Roles(Role.Admin)
-    @UseGuards(RolesGuard)
+    @UseGuards(AuthGuard, RolesGuard)
     updateProduct(@Param('id') id:string, @Body() product: any) {
         return this.productsService.updateProduct(id, product)
     }

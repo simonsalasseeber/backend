@@ -13,17 +13,11 @@ const {
     DB_SSL
    } = process.env;
 
-// // Suponiendo que DB_URL es tu variable de entorno con la URL de la base de datos
-// const dbUrl = process.env.DB_URL;
-
-// const url = require('url');
-// const parsedUrl = url.parse(dbUrl);
-// const port = parsedUrl.port || 3000; 
 
 const config = {
  type: 'postgres',
  host: DB_HOST,
- port: parseInt(DB_PORT) || 3000,
+ port: DB_PORT || 5432,
  username: DB_USERNAME,
  password: DB_PASSWORD,
  database: DB_NAME,
