@@ -1,13 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsUUID } from 'class-validator';
 
 export class CreateProductDto {
- @ApiProperty({
-    description: 'The unique identifier of the product. Generated automatically.',
-    example: '123e4567-e89b-12d3-a456-426614174000',
- })
- @IsOptional()
- id?: string;
 
  @ApiProperty({
     description: 'The name of the product.',
@@ -50,10 +44,11 @@ export class CreateProductDto {
  imgUrl: string;
 
  @ApiProperty({
-    description: 'The category of the product.',
-    example: 'Electronics',
+    description: 'The ID of the category of the product.',
+    example: '0edb105b-a90b-43d6-a980-47283d29339d',
  })
  @IsNotEmpty()
  @IsString()
+ @IsUUID()
  category: string;
 }

@@ -1,8 +1,8 @@
-import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudService } from './cloud.service';
 import { AuthGuard } from 'src/auth/guards/auth.guards';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('cloud')
 @Controller('cloud')
@@ -11,10 +11,25 @@ export class CloudController {
 
 @ApiBearerAuth()
 @Post('uploadImage/:id')
+@ApiOperation({ summary: 'Upload product image' })
+@ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Product image file',
+    required: true,
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
 @UseGuards(AuthGuard)
 @UseInterceptors(FileInterceptor('file')) // in the form field, i receive a 'file' name, and the image
 async uploadImage(
-    @Param(':id') productId: string,
+    @Param('id', new ParseUUIDPipe()) productId: string,
     @UploadedFile(
         new ParseFilePipe({
             validators: [

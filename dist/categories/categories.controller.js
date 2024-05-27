@@ -28,6 +28,7 @@ let CategoriesController = class CategoriesController {
 exports.CategoriesController = CategoriesController;
 __decorate([
     (0, common_1.Post)('seeder'),
+    (0, swagger_1.ApiOperation)({ summary: 'If starting from scratch, add some categories' }),
     openapi.ApiResponse({ status: 201, type: [String] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -35,6 +36,7 @@ __decorate([
 ], CategoriesController.prototype, "addCategories", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all categories' }),
     openapi.ApiResponse({ status: 200, type: [require("../entities/categories.entity").Category] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

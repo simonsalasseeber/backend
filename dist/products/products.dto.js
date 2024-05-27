@@ -15,18 +15,10 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateProductDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: false, type: () => String }, name: { required: true, type: () => String }, description: { required: true, type: () => String }, price: { required: true, type: () => Number }, stock: { required: true, type: () => Number }, imgUrl: { required: true, type: () => String }, category: { required: true, type: () => String } };
+        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, price: { required: true, type: () => Number }, stock: { required: true, type: () => Number }, imgUrl: { required: true, type: () => String }, category: { required: true, type: () => String } };
     }
 }
 exports.CreateProductDto = CreateProductDto;
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'The unique identifier of the product. Generated automatically.',
-        example: '123e4567-e89b-12d3-a456-426614174000',
-    }),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateProductDto.prototype, "id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'The name of the product.',
@@ -74,11 +66,12 @@ __decorate([
 ], CreateProductDto.prototype, "imgUrl", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'The category of the product.',
-        example: 'Electronics',
+        description: 'The ID of the category of the product.',
+        example: '0edb105b-a90b-43d6-a980-47283d29339d',
     }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "category", void 0);
 //# sourceMappingURL=products.dto.js.map

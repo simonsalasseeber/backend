@@ -10,9 +10,7 @@ export class AuthService {
     constructor(private readonly usersRepository: UsersRepository,
         private readonly jwtService: JwtService
     ) {}
-    getAuth() {
-        return "this is my auth";
-    }
+    
     async signIn(logindto: logindto) {
         const { email, password } = logindto;
 

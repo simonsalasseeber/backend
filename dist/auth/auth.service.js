@@ -19,9 +19,6 @@ let AuthService = class AuthService {
         this.usersRepository = usersRepository;
         this.jwtService = jwtService;
     }
-    getAuth() {
-        return "this is my auth";
-    }
     async signIn(logindto) {
         const { email, password } = logindto;
         if (!email || !password) {

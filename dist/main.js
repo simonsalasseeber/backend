@@ -17,7 +17,7 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, swaggerConfig);
     swagger_1.SwaggerModule.setup('api', app, document);
     app.use(loggers_middleware_1.loggerGlobal);
-    await app.listen(parseInt(process.env.DB_PORT));
+    await app.listen(parseInt("3000"));
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

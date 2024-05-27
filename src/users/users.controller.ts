@@ -1,10 +1,10 @@
-import { Controller, Get, Put, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Param, Body, Query, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/guards/auth.guards';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/roles.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UserDto } from './users.dto';
 
 @ApiTags('users')
@@ -14,6 +14,7 @@ export class UsersController {
 
     @ApiBearerAuth()
     @Get()
+    @ApiOperation({ summary: 'Get all users (admin only)' })
     @Roles(Role.Admin) 
     @UseGuards(AuthGuard, RolesGuard)
     @ApiQuery({name: 'page', required: false})
@@ -25,20 +26,25 @@ export class UsersController {
         return this.usersService.getUsers(1, 5);
     }
     @Get(':id')
+    @ApiOperation({ summary: 'Get one user by id' })
     getUserById(@Param('id') id:string) { 
         return this.usersService.getUserById(id)
     }
    
     @ApiBearerAuth()
     @Put(':id')
-    @UseGuards(AuthGuard)
-    updateUser(@Param('id') id: string, @Body() user: Partial<UserDto>) {
+    @ApiOperation({ summary: 'Modify user by id' })
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
+    updateUser(@Param('id', new ParseUUIDPipe()) id: string, @Body() user: Partial<UserDto>) {
         return this.usersService.updateUser(id, user);
     }
 
     @ApiBearerAuth()
     @Delete(':id')
-    @UseGuards(AuthGuard)
+    @ApiOperation({ summary: 'Delete user by id'})
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     deleteUser(@Param('id') id: string) {
         return this.usersService.deleteUser(id);
     }

@@ -36,6 +36,7 @@ let OrdersController = class OrdersController {
 exports.OrdersController = OrdersController;
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiOperation)({ summary: "Add an order to a particular user - it creates the attached order detail" }),
     openapi.ApiResponse({ status: 201, type: require("../entities/orders.entity").Order }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -44,6 +45,7 @@ __decorate([
 ], OrdersController.prototype, "postOrder", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: "Get order specifications by id" }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -52,6 +54,7 @@ __decorate([
 ], OrdersController.prototype, "getOrder", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: "Delete order by id" }),
     openapi.ApiResponse({ status: 200, type: String }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

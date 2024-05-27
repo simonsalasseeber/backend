@@ -32,10 +32,10 @@ __decorate([
     __metadata("design:type", String)
 ], UserDto.prototype, "email", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'The password of the user' }),
+    (0, swagger_1.ApiProperty)({ description: 'Password must contain at least one lower case, one upper case, a number and one of the following special characters: @$!%*?&' }),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-        message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: @$!%*?&',
+        message: 'Password must contain at least one lower case, one upper case, a number and one of the following special characters: @$!%*?&',
     }),
     __metadata("design:type", String)
 ], UserDto.prototype, "password", void 0);

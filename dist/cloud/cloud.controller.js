@@ -31,10 +31,25 @@ exports.CloudController = CloudController;
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)('uploadImage/:id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Upload product image' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        description: 'Product image file',
+        required: true,
+        schema: {
+            type: 'object',
+            properties: {
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    }),
     (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     openapi.ApiResponse({ status: 201, type: require("../entities/products.entity").Product }),
-    __param(0, (0, common_1.Param)(':id')),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({
         validators: [
             new common_1.MaxFileSizeValidator({

@@ -23,9 +23,6 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    getAuth() {
-        return this.authService.getAuth();
-    }
     signIn(credential) {
         return this.authService.signIn(credential);
     }
@@ -35,14 +32,8 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Get)(),
-    openapi.ApiResponse({ status: 200, type: String }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "getAuth", null);
-__decorate([
     (0, common_1.Post)('signin'),
+    (0, swagger_1.ApiOperation)({ summary: 'Sign in user' }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -51,6 +42,7 @@ __decorate([
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.Post)('signup'),
+    (0, swagger_1.ApiOperation)({ summary: "Sign up user" }),
     openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

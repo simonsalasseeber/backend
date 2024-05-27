@@ -8,18 +8,11 @@ const config_1 = require("@nestjs/config");
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_SSL } = process.env;
 const config = {
     type: 'postgres',
-    host: 'dpg-comm9nsf7o1s73f72j30-a.frankfurt-postgres.render.com',
-    port: 5432,
-    username: 'admin',
-    password: 'QG6LAqL53PxabMz2UN8oRgQmIJo4UGrT',
-    database: 'pihenrysimon_vzr0',
-    ssl: DB_SSL === 'true',
-    extra: {
-        ssl: DB_SSL === 'true' ? {
-            rejectUnauthorized: false,
-        }
-            : null,
-    },
+    host: DB_HOST,
+    port: DB_PORT || 5432,
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
+    database: DB_NAME,
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
     synchronize: false,

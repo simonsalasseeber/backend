@@ -45,6 +45,7 @@ exports.UsersController = UsersController;
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all users (admin only)' }),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
     (0, common_1.UseGuards)(auth_guards_1.AuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiQuery)({ name: 'page', required: false }),
@@ -58,6 +59,7 @@ __decorate([
 ], UsersController.prototype, "getUsers", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get one user by id' }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -67,9 +69,11 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
+    (0, swagger_1.ApiOperation)({ summary: 'Modify user by id' }),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard, roles_guard_1.RolesGuard),
     openapi.ApiResponse({ status: 200, type: require("../entities/users.entity").User }),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
@@ -78,7 +82,9 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
+    (0, swagger_1.ApiOperation)({ summary: 'Delete user by id' }),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard, roles_guard_1.RolesGuard),
     openapi.ApiResponse({ status: 200, type: String }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

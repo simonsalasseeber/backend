@@ -22,6 +22,7 @@ const swagger_1 = require("@nestjs/swagger");
 const roles_decorator_1 = require("../decorators/roles.decorator");
 const roles_enum_1 = require("../roles.enum");
 const products_dto_1 = require("./products.dto");
+const products_entity_1 = require("../entities/products.entity");
 let ProductsController = class ProductsController {
     constructor(productsService) {
         this.productsService = productsService;
@@ -50,6 +51,7 @@ let ProductsController = class ProductsController {
 exports.ProductsController = ProductsController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all products' }),
     (0, swagger_1.ApiQuery)({ name: 'page', required: false }),
     (0, swagger_1.ApiQuery)({ name: 'limit', required: false }),
     openapi.ApiResponse({ status: 200, type: [require("../entities/products.entity").Product] }),
@@ -61,14 +63,16 @@ __decorate([
 ], ProductsController.prototype, "getProducts", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get products by ID' }),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "getProductById", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Add products' }),
     openapi.ApiResponse({ status: 201, type: require("../entities/products.entity").Product }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -77,6 +81,7 @@ __decorate([
 ], ProductsController.prototype, "addProduct", null);
 __decorate([
     (0, common_1.Post)('seeder'),
+    (0, swagger_1.ApiOperation)({ summary: 'If starting from scratch, create some initial products' }),
     openapi.ApiResponse({ status: 201, type: [require("../entities/products.entity").Product] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -85,18 +90,22 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Edit products (Admin only)' }),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard, roles_guard_1.RolesGuard),
     openapi.ApiResponse({ status: 200, type: Object }),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, products_entity_1.Product]),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "updateProduct", null);
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Delete products (Admin only)' }),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
+    (0, common_1.UseGuards)(auth_guards_1.AuthGuard, roles_guard_1.RolesGuard),
     openapi.ApiResponse({ status: 200, type: String }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -106,7 +115,6 @@ __decorate([
 exports.ProductsController = ProductsController = __decorate([
     (0, swagger_1.ApiTags)('products'),
     (0, common_1.Controller)('products'),
-    (0, common_1.UseGuards)(auth_guards_1.AuthGuard),
     __metadata("design:paramtypes", [products_service_1.ProductsService])
 ], ProductsController);
 //# sourceMappingURL=products.controller.js.map

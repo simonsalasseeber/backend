@@ -12,10 +12,10 @@ export class UserDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty({ description: 'The password of the user' })
+  @ApiProperty({ description: 'Password must contain at least one lower case, one upper case, a number and one of the following special characters: @$!%*?&' })
   @IsNotEmpty()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-    message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: @$!%*?&',
+    message: 'Password must contain at least one lower case, one upper case, a number and one of the following special characters: @$!%*?&',
   })
   password: string;
 
